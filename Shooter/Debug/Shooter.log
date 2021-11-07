@@ -1,0 +1,16 @@
+﻿  main.c
+D:\MyProjects\C\Programs\Shooter\Shooter\main.c(80,1): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+D:\MyProjects\C\Programs\Shooter\Shooter\main.c(138,29): warning C4244: функция: преобразование "float" в "int", возможна потеря данных
+D:\MyProjects\C\Programs\Shooter\Shooter\main.c(138,48): warning C4244: функция: преобразование "float" в "int", возможна потеря данных
+D:\MyProjects\C\Programs\Shooter\Shooter\main.c(138,80): warning C4244: функция: преобразование "float" в "int", возможна потеря данных
+D:\MyProjects\C\Programs\Shooter\Shooter\main.c(139,33): warning C4244: функция: преобразование "float" в "int", возможна потеря данных
+D:\MyProjects\C\Programs\Shooter\Shooter\main.c(228,32): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+D:\MyProjects\C\Programs\Shooter\Shooter\main.c(233,31): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+D:\MyProjects\C\Programs\Shooter\Shooter\main.c(238,32): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+D:\MyProjects\C\Programs\Shooter\Shooter\main.c(243,31): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+D:\MyProjects\C\Programs\Shooter\Shooter\main.c(248,44): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
+D:\MyProjects\C\Programs\Shooter\Shooter\main.c(248,66): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
+D:\MyProjects\C\Programs\Shooter\Shooter\main.c(304,2): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\MyProjects\C\Programs\Shooter\Shooter\main.c(357,18): warning C4244: функция: преобразование "time_t" в "unsigned int", возможна потеря данных
+D:\MyProjects\C\Programs\Shooter\Shooter\main.c(352): warning C4715: wndProc: значение возвращается не при всех путях выполнения
+  Shooter.vcxproj -> D:\MyProjects\C\Programs\Shooter\Debug\Shooter.exe
