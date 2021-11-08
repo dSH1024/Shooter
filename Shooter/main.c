@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <time.h>
 
 #include <Windows.h>
 
@@ -118,9 +117,15 @@ void objInit(PObj obj, float x, float y, float width, float height, char type)
 		obj->color = RGB(255, 0, 0);
 	}
 
-	if (obj->type == 'b')
+	if ((obj->type == 'b') || (obj->type == 'B'))
 	{
+		obj->color = RGB(255, 140, 0);
 		obj->range = 300;
+
+		if (obj->type == 'B')
+		{
+			obj->range = 200;
+		}
 	}
 }
 
@@ -133,7 +138,7 @@ void objShow(HDC dc, TObj obj)
 	SetDCBrushColor(dc, obj.color);
 
 	BOOL(WINAPI * shape)(HDC, int, int, int, int);
-	shape = obj.type == 'e' ? Ellipse : Rectangle;
+	shape = (obj.type == 'e') || (obj.type == 'b') || (obj.type == 'B') ? Ellipse : Rectangle;
 
 	shape(dc, obj.pos.x - cam.x, obj.pos.y - cam.y, obj.pos.x + obj.size.x - cam.x,
 		obj.pos.y + obj.size.y - cam.y);
@@ -154,9 +159,9 @@ void genNewEnemy()
 		yRand = rand() % 600 - 300;
 	}
 
-	int k = rand() % 100;
+	int k = rand() % 40;
 
-	if (k == 1)
+	if (k == 0)
 	{
 		ADD_ENEMY(player.pos.x + xRand, player.pos.y + yRand);
 	}
@@ -168,7 +173,7 @@ void objMove(PObj obj)
 	obj->pos.x += obj->speed.x;
 	obj->pos.y += obj->speed.y;
 
-	if (obj->type == 'b')
+	if ((obj->type == 'b') || (obj->type == 'B'))
 	{
 		obj->range -= obj->vecSpeed;
 
@@ -202,7 +207,7 @@ void objMove(PObj obj)
 		}
 	}
 
-	if (rand() % 10 == 0)
+	if (rand() % 20 == 0)
 	{
 		genNewEnemy();
 	}
@@ -250,12 +255,20 @@ void playerControl()
 }
 
 
-void createBullet(PObj obj, float x, float y)
+void createBullet(PObj obj, float x, float y, char bulType)
 {
-	objInit(obj, player.pos.x + player.size.x / 2, player.pos.y + player.size.y / 2,
-		10, 10, 'b');
-
-	objSetDestPoint(obj, x, y, 2.5);
+	if (bulType == 'b')
+	{
+		objInit(obj, player.pos.x + player.size.x / 2, player.pos.y + player.size.y / 2,
+			10, 10, bulType);
+		objSetDestPoint(obj, x, y, 2.5);
+	}
+	else if (bulType == 'B')
+	{
+		objInit(obj, player.pos.x + player.size.x / 2, player.pos.y + player.size.y / 2,
+			20, 20, bulType);
+		objSetDestPoint(obj, x, y, 1.5);
+	}
 }
 
 
@@ -282,7 +295,23 @@ void winShow(HDC dc)
 	SelectObject(memDC, GetStockObject(DC_PEN));
 	SetDCPenColor(memDC, RGB(105, 105, 105));
 	SelectObject(memDC, GetStockObject(DC_BRUSH));
-	SetDCBrushColor(memDC, RGB(211, 211, 211));
+
+	if (score >= 100 && score < 500)
+	{
+		SetDCBrushColor(memDC, RGB(240, 230, 140));
+	}
+	else if (score >= 500 && score < 1000)
+	{
+		SetDCBrushColor(memDC, RGB(255, 218, 185));
+	}
+	else if (score >= 1000 && score < 2000)
+	{
+		SetDCBrushColor(memDC, RGB(255, 239, 213));
+	}
+	else
+	{
+		SetDCBrushColor(memDC, RGB(211, 211, 211));
+	}
 
 	for (int i = -1; i < (rct.right / rctSize) + 2; i++)
 	{
@@ -341,7 +370,14 @@ LRESULT WINAPI wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 		{
 			float xMouse = LOWORD(lparam);
 			float yMouse = HIWORD(lparam);
-			createBullet(newObject(), xMouse + cam.x, yMouse + cam.y);
+			createBullet(newObject(), xMouse + cam.x, yMouse + cam.y, 'b');
+			break;
+		}
+		case WM_RBUTTONDOWN:
+		{
+			float xMouse = LOWORD(lparam);
+			float yMouse = HIWORD(lparam);
+			createBullet(newObject(), xMouse + cam.x, yMouse + cam.y, 'B');
 			break;
 		}
 		default:
@@ -354,7 +390,7 @@ LRESULT WINAPI wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 
 int main()
 {
-	srand(time(NULL));
+	srand(7);
 
 	WNDCLASSA win;
 		memset(&win, 0, sizeof(win));
@@ -387,6 +423,11 @@ int main()
 		}
 		else
 		{
+			if (GetKeyState(VK_ESCAPE) < 0)
+			{
+				break;
+			}
+
 			winMove();
 			winShow(dc);
 			Sleep(5);
